@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+.goog-te-gadget {
+    position: absolute;
+    display: none;
+    top: 60px;
+    right: 20px;
+    padding: 10px;
+    gap: 10px;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+
+.goog-te-combo {
+    display: flex;
+    align-items: center;
+    width: 150px;
+    justify-content: center;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    color: #000;
+}
+
+.VIpgJd-ZVi9od-l4eHX-hSRGPd{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
