@@ -91,9 +91,7 @@ describe('auth routes', () => {
       village: 'Village',
       role: 'farmer',
     });
-    Client.findOne
-      .mockResolvedValueOnce({ _id: 'default-client', code: 'DEFAULT' })
-      .mockResolvedValueOnce({ _id: '64b64b64b64b64b64b64b64b', isActive: true, status: 'approved' });
+    Client.findOne.mockResolvedValue({ _id: '64b64b64b64b64b64b64b64b', isActive: true, status: 'approved' });
     UserClient.create.mockResolvedValue({});
 
     const response = await request(app)

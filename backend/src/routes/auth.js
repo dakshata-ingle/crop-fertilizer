@@ -46,29 +46,6 @@ router.post('/signup', async (req, res) => {
       });
     }
 
-    // Hash password
-    const hashedPassword = await bcryptjs.hash(password, 10);
-
-    // Create farmer user
-    const newUserData = {
-      name,
-      email,
-      phone,
-      village,
-      password: hashedPassword,
-      role: 'farmer',
-    };
-
-    const user = await User.create(newUserData);
-    // Find default client
-    const defaultClient = await Client.findOne({
-      code: 'DEFAULT',
-    });
-
-    if (!defaultClient) {
-      throw new Error('Default client not found.');
-    }
-
     const selectedClientId = typeof registerUnder === 'string' && registerUnder !== 'individual'
       ? registerUnder
       : null;
@@ -95,7 +72,37 @@ router.post('/signup', async (req, res) => {
       });
     }
 
-    const assignedClient = selectedClient || defaultClient;
+    let assignedClient = selectedClient;
+
+    if (!assignedClient) {
+      assignedClient = await Client.findOne({ code: 'DEFAULT' });
+
+      if (!assignedClient) {
+        assignedClient = await Client.create({
+          name: 'Default Client',
+          code: 'DEFAULT',
+          email: 'default@cropferti.com',
+          phone: '',
+          address: '',
+          description: 'System Default Client',
+          status: 'approved',
+          isActive: true,
+        });
+      }
+    }
+
+    // Hash password only after client assignment is ready, so a missing client
+    // cannot leave an orphaned user record behind.
+    const hashedPassword = await bcryptjs.hash(password, 10);
+
+    const user = await User.create({
+      name,
+      email,
+      phone,
+      village,
+      password: hashedPassword,
+      role: 'farmer',
+    });
 
     // Create UserClient mapping
     await UserClient.create({
